@@ -1,13 +1,13 @@
 package com.github.senyast4745.gamebank.repository;
 
 import com.github.senyast4745.gamebank.model.Role;
+import com.github.senyast4745.gamebank.model.TeamModel;
 import com.github.senyast4745.gamebank.model.UserModel;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends CrudRepository<UserModel, Long> {
-    Optional<UserModel> findByUsername(String number);
+public interface TeamsRepository extends CrudRepository<TeamModel, Long> {
+
+    Optional<TeamModel> findByTeamNumber(Long number);
 }

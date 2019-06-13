@@ -11,7 +11,7 @@ import java.util.Collections;
 import static com.github.senyast4745.gamebank.model.Role.LEADING;
 
 @Entity
-@Table(name = "teams")
+@Table(name = "userss")
 public class UserModel implements UserDetails {
 
     @Id
@@ -29,69 +29,22 @@ public class UserModel implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "team_number", unique = true)
-    private Long teamNumber;
-
-    @Column(name = "score")
-    private Double score;
-
-    @Column(name = "full_score")
-    private Double fullScore;
-
-    @Column(name = "credit")
-    private Double credit;
-
-    @Column(name = "deposit")
-    private Double deposit;
-
-    @Column(name = "credit_time")
-    private Long creditTime;
-
-    @Column(name = "deposit_time")
-    private Long depositTime;
-
-    @Column(name = "max_score")
-    private Double maxScore;
-
-    @Column(name = "coefficient")
-    private Double coefficient;
-
     @Column(name = "non_locked")
     private boolean nonLocked;
 
     public UserModel() {
     }
 
-    public UserModel(String username, Long teamNumber, Double score, Double credit, Double deposit, Long creditTime, Long depositTime, Double fullScore) {
-        this.teamNumber = teamNumber;
-        this.score = score;
-        this.fullScore = fullScore;
-        this.credit = credit;
-        this.deposit = deposit;
-        this.creditTime = creditTime;
-        this.role = Role.TEAM;
-        this.depositTime = depositTime;
-        password = null;
-        this.username = username;
-        nonLocked = false;
-        maxScore = null;
-        coefficient = null;
-    }
-
-    public UserModel(String username, String password, String role, Double maxScore, Double coefficient) {
+    public UserModel(String username, String password, String role) {
         this.username = username;
         this.password = password;
-        this.credit = null;
-        this.deposit = null;
-        this.creditTime = null;
-        this.depositTime = null;
-        this.score = null;
-        this.fullScore = null;
-        this.maxScore = maxScore;
-        this.coefficient = coefficient;
         switch (role) {
             case "LEADING": {
                 this.role = LEADING;
+                break;
+            }
+            case "EXCHANGE_WORKER": {
+                this.role = Role.EXCHANGE_WORKER;
                 break;
             }
             case "MODERATOR": {
@@ -99,7 +52,7 @@ public class UserModel implements UserDetails {
                 break;
             }
             default:
-                throw new IllegalArgumentException("Incorrect role");
+                this.role = Role.TEAM;
         }
         nonLocked = false;
     }
@@ -116,46 +69,6 @@ public class UserModel implements UserDetails {
         this.username = username;
     }
 
-    public Long getTeamNumber() {
-        return teamNumber;
-    }
-
-    public void setTeamNumber(Long teamNumber) {
-        this.teamNumber = teamNumber;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public Double getCredit() {
-        return credit;
-    }
-
-    public void setCredit(Double credit) {
-        this.credit = credit;
-    }
-
-    public Double getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(Double deposit) {
-        this.deposit = deposit;
-    }
-
-    public Long getCreditTime() {
-        return creditTime;
-    }
-
-    public void setCreditTime(Long creditTime) {
-        this.creditTime = creditTime;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -168,32 +81,8 @@ public class UserModel implements UserDetails {
         this.password = password;
     }
 
-    public Long getDepositTime() {
-        return depositTime;
-    }
-
-    public void setDepositTime(Long depositTime) {
-        this.depositTime = depositTime;
-    }
-
     public void setNonLocked(boolean nonLocked) {
         this.nonLocked = nonLocked;
-    }
-
-    public Double getMaxScore() {
-        return maxScore;
-    }
-
-    public void setMaxScore(Double maxScore) {
-        this.maxScore = maxScore;
-    }
-
-    public Double getCoefficient() {
-        return coefficient;
-    }
-
-    public void setCoefficient(Double coefficient) {
-        this.coefficient = coefficient;
     }
 
     public boolean isNonLocked() {
@@ -233,13 +122,5 @@ public class UserModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Double getFullScore() {
-        return fullScore;
-    }
-
-    public void setFullScore(Double fullScore) {
-        this.fullScore = fullScore;
     }
 }

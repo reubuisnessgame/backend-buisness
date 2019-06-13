@@ -24,11 +24,6 @@ public class ShareModel {
     private Long sharesNumbers;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private UserModel userModel;
-
-    @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CompanyModel companyModel;
@@ -36,11 +31,10 @@ public class ShareModel {
     public ShareModel() {
     }
 
-    public ShareModel(Long userId, Long companyId, Long sharesNumbers, UserModel userModel, CompanyModel companyModel) {
+    public ShareModel(Long userId, Long companyId, Long sharesNumbers, CompanyModel companyModel) {
         this.userId = userId;
         this.companyId = companyId;
         this.sharesNumbers = sharesNumbers;
-        this.userModel = userModel;
         this.companyModel = companyModel;
     }
 
@@ -74,14 +68,6 @@ public class ShareModel {
 
     public void setSharesNumbers(Long sharesNumbers) {
         this.sharesNumbers = sharesNumbers;
-    }
-
-    public UserModel getUserModel() {
-        return userModel;
-    }
-
-    public void setUserModel(UserModel userModel) {
-        this.userModel = userModel;
     }
 
     public CompanyModel getCompanyModel() {

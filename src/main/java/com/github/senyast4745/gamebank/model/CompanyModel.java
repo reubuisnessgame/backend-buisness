@@ -8,13 +8,13 @@ public class CompanyModel {
 
     @Id
     @GeneratedValue
-    @Column(name = "company_id")
+    @Column(name = "company_id", unique = true)
     private Long id;
 
     @Column(name = "share_price")
     private Double sharePrice;
 
-    @Column(name = "company_name")
+    @Column(name = "company_name", unique = true, nullable = false)
     private String companyName;
 
     public CompanyModel() {

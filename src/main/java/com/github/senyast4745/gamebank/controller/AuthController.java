@@ -2,6 +2,7 @@ package com.github.senyast4745.gamebank.controller;
 
 
 import com.github.senyast4745.gamebank.form.AuthForm;
+import com.github.senyast4745.gamebank.model.Role;
 import com.github.senyast4745.gamebank.model.UserModel;
 import com.github.senyast4745.gamebank.repository.UserRepository;
 import com.github.senyast4745.gamebank.secutity.jwt.JwtTokenProvider;
@@ -39,16 +40,14 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @RequestMapping(value = "/{teamNumber}",method = RequestMethod.POST)
-        public ResponseEntity signIn(@PathVariable Long teamNumber) {
+    @RequestMapping(value = "/{username}",method = RequestMethod.POST)
+        public ResponseEntity signIn(@PathVariable String username) {
         try {
-            UserModel userModel = userRepository.findByTeamNumber(teamNumber)
-                    .orElse(userRepository.save(new UserModel(teamNumber, 0D, 0D, 0D, 0L,0L)));
+            UserModel userModel = userRepository.findByUsername(username).orElseThrow(()
+                    -> new UsernameNotFoundException("Username " + username + "not found"));
             //TODO thinking about authenticationManager
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(teamNumber, null));
-            String token = jwtTokenProvider.createToken(teamNumber.toString(), userRepository.findByUsername(teamNumber.toString()).orElseThrow(()
-                    -> new UsernameNotFoundException("Username " + teamNumber + "not found")).getRole().name());
-
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, null));
+            String token = jwtTokenProvider.createToken(username, Role.TEAM.name());
             Map<Object, Object> model = new HashMap<>();
             model.put("model", userModel);
             model.put("token", token);
@@ -58,7 +57,7 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/admins", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ResponseEntity signInAdmin(@RequestBody AuthForm authForm) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authForm.getUsername(), authForm.getPassword()));
